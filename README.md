@@ -29,7 +29,7 @@ set -g @plugin 'ayyess/tmux-resize'
 
 3. Configure your own resizing shortcuts:
 ```sh
-set -g @resize-no-bindings
+set -g @resize-no-bindings 1
 tmux bind-key -n M-H  run-shell -b "#{resize_pane} left"
 tmux bind-key -n M-J  run-shell -b "#{resize_pane} down"
 tmux bind-key -n M-K  run-shell -b "#{resize_pane} up"
