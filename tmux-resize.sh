@@ -3,7 +3,7 @@ set -euo pipefail
 
 get_tmux_option() { tmux show-option -gqv "$@" | grep . ;}
 
-navigate_script=$(get_tmux_option '@navigate-script') || { printf "tmux-navigate has not been run\n" >&2; exit 1; }
+navigate_script=$(tmux show-environment -g navigate_pane | cut -d "=" -f2 ; test "${PIPESTATUS[0]}" -eq 0) || { printf "tmux-navigate has not been run\n" >&2; exit 1; }
 # shellcheck source=../tmux-navigate/tmux-navigate.sh
 source "${navigate_script}"
 

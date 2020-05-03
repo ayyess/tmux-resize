@@ -4,6 +4,7 @@ set -euo pipefail
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 resize_script="${CURRENT_DIR}/tmux-resize.sh"
+# shellcheck source=tmux-resize.sh
 source "${resize_script}"
 tmux set-environment -g resize_pane "${resize_script}"
 
