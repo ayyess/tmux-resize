@@ -30,10 +30,10 @@ set -g @plugin 'ayyess/tmux-resize'
 3. Configure your own resizing shortcuts:
 ```sh
 set -g @resize-no-bindings
-tmux bind-key -n M-H  run-shell -b "/path/to/tmux-resize.sh left"
-tmux bind-key -n M-J  run-shell -b "/path/to/tmux-resize.sh down"
-tmux bind-key -n M-K  run-shell -b "/path/to/tmux-resize.sh up"
-tmux bind-key -n M-L  run-shell -b "/path/to/tmux-resize.sh right"
+tmux bind-key -n M-H  run-shell -b "#{resize_pane} left"
+tmux bind-key -n M-J  run-shell -b "#{resize_pane} down"
+tmux bind-key -n M-K  run-shell -b "#{resize_pane} up"
+tmux bind-key -n M-L  run-shell -b "#{resize_pane} right"
 ```
 
 ### Vim integration - when using Vim remotely via SSH
