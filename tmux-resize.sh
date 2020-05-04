@@ -78,7 +78,7 @@ main() {
     # left edge moves as expected)
     case "$direction" in
       down|right) action="expand" ;;
-      up|left) 
+      up|left)
         action="shrink"
         if [[ "$direction" == "left" ]]; then
           direction="right"
@@ -90,28 +90,35 @@ main() {
         printf "Unsupported direction: '%s'\n" $direction >&2; exit 1
     esac
   fi
+
+  # Manually switching vim splits with "C-w h" is a workaround for aboveleft
+  # having no effect in `:aboveleft vertical resize +5`.
+  # Track issue at https://github.com/neovim/neovim/issues/8270
   case "$action" in
     expand )
       case "$direction" in
         down )
-          resize 'tmux resize-pane -D'  'tmux send-keys C-w +' ;; 
+          resize 'tmux resize-pane -D'  'tmux send-keys C-w +' ;;
         right )
           resize 'tmux resize-pane -R'  'tmux send-keys C-w \>' ;;
+        up )
+          resize 'tmux resize-pane -t{up-of} -U'  'tmux send-keys C-w k C-w - C-w j' ;;
+        left )
+          resize 'tmux resize-pane -t{left-of} -L'  'tmux send-keys C-w h C-w \< C-w l' ;;
         * )
           printf "Unsupported direction for %sing: '%s'\n" $action $direction >&2; exit 1
-
-          # TODO use `tmux -t{left-of}` for moving the left/top edge
-          # TODO find workaround for the aboveleft in
-          # `:aboveleft vertical resize +5` having no effect in vim
-          # https://github.com/neovim/neovim/issues/8270
       esac
       ;;
-    shrink ) 
+    shrink )
       case "$direction" in
         down )
           resize 'tmux resize-pane -U'  'tmux send-keys C-w -' ;;
         right )
           resize 'tmux resize-pane -L'  'tmux send-keys C-w \<' ;;
+        up )
+          resize 'tmux resize-pane -t{up-of} -D'  'tmux send-keys C-w k C-w + C-w j' ;;
+        left )
+          resize 'tmux resize-pane -t{left-of} -R'  'tmux send-keys C-w h C-w \> C-w l' ;;
         * )
           printf "Unsupported direction for %sing: '%s'\n" $action $direction >&2; exit 2
       esac

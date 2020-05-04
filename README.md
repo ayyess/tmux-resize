@@ -30,10 +30,29 @@ set -g @plugin 'ayyess/tmux-resize'
 3. Configure your own resizing shortcuts:
 ```sh
 set -g @resize-no-bindings 1
-tmux bind-key -n M-H  run-shell -b "#{resize_pane} left"
-tmux bind-key -n M-J  run-shell -b "#{resize_pane} down"
-tmux bind-key -n M-K  run-shell -b "#{resize_pane} up"
-tmux bind-key -n M-L  run-shell -b "#{resize_pane} right"
+bind-key -n M-H  run-shell -b "#{resize_pane} left"
+bind-key -n M-J  run-shell -b "#{resize_pane} down"
+bind-key -n M-K  run-shell -b "#{resize_pane} up"
+bind-key -n M-L  run-shell -b "#{resize_pane} right"
+```
+
+3.5 Left/upper edge control
+
+The first half of the mappings are identical to the mappings above but with the
+controlled edge explicitly specified.
+
+```sh
+set -g @resize-no-bindings
+# move right/bottom edge of current pane
+bind-key -n M-H    run-shell -b "#{resize_pane} right shrink"
+bind-key -n M-J    run-shell -b "#{resize_pane} down  expand"
+bind-key -n M-K    run-shell -b "#{resize_pane} down  shrink"
+bind-key -n M-L    run-shell -b "#{resize_pane} right expand"
+# move left/top edge of current pane
+bind-key -n C-M-h  run-shell -b "#{resize_pane} left  expand"
+bind-key -n C-M-j  run-shell -b "#{resize_pane} up    shrink"
+bind-key -n C-M-k  run-shell -b "#{resize_pane} up    expand"
+bind-key -n C-M-l  run-shell -b "#{resize_pane} left  shrink"
 ```
 
 ### Vim integration - when using Vim remotely via SSH
