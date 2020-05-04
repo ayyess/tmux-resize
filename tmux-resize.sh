@@ -38,17 +38,24 @@ resize() {
   if pane_contains_vim && eval "$vim_resizing_only_if"; then
     in_terminal=0
     if pane_contains_neovim_terminal; then
+      # TODO This currently does not detect being in a terminal
       in_terminal=1
       # escape terminal mode
       tmux send-keys C-\\ C-n;
     fi;
+    in_insert_mode=0
+    if [[ "$pane_title" == *"mode:i"* ]]; then
+      in_insert_mode=1
+      # enter insert-normal mode for one command
+      # Doesn't seem keep up if holding down the resize key
+      tmux send-keys 'C-o'
+    fi
     if neighbour_pane_contains_vim "$direction"; then
       eval "$vim_resizing_command";
     else
       eval "$tmux_resizing_command";
     fi
-    if [[ "${in_terminal}" -eq 1 ]]; then
-      # reenter terminal mode TODO check if was in insert before
+    if [[ "${in_terminal}" -eq 1 ]] && [[ "${in_insert_mode}" -eq 1 ]]; then
       tmux send-keys i;
     fi;
   elif ! pane_is_zoomed; then
