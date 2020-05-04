@@ -38,7 +38,9 @@ resize() {
   if pane_contains_vim && eval "$vim_resizing_only_if"; then
     in_terminal=0
     if pane_contains_neovim_terminal; then
-      # TODO This currently does not detect being in a terminal
+      # tmux-resize inherits the same problem with detecting neovim terminal
+      # panes as tmux-navigate. This means that it's hard to know when whether
+      # tmux-navigate should send a command to reenter insert-terminal-mode.
       in_terminal=1
       # escape terminal mode
       tmux send-keys C-\\ C-n;
@@ -55,7 +57,7 @@ resize() {
     else
       eval "$tmux_resizing_command";
     fi
-    if [[ "${in_terminal}" -eq 1 ]] && [[ "${in_insert_mode}" -eq 1 ]]; then
+    if [[ "${in_terminal}" -eq 1 ]] || [[ "${in_insert_mode}" -eq 1 ]]; then
       tmux send-keys i;
     fi;
   elif ! pane_is_zoomed; then
