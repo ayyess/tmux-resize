@@ -99,6 +99,9 @@ main() {
           printf "Unsupported direction for %sing: '%s'\n" $action $direction >&2; exit 1
 
           # TODO use `tmux -t{left-of}` for moving the left/top edge
+          # TODO find workaround for the aboveleft in
+          # `:aboveleft vertical resize +5` having no effect in vim
+          # https://github.com/neovim/neovim/issues/8270
       esac
       ;;
     shrink ) 
